@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocalStore } from "mobx-react";
 
-import { todoList } from "../../controllers/TodoList";
+import { todoList } from "../../stores/TodoList";
 
 const TodoContext = React.createContext(null);
 
