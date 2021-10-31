@@ -20,17 +20,8 @@ const Home = () => {
   return (
     <div className="form-login">
       <Form
-        layout="vertical"
         name="basic"
-        labelCol={{
-          span: 25,
-        }}
-        wrapperCol={{
-          span: 42,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        labelCol={{ span: 12 }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -90,25 +81,9 @@ const Home = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Registrar
           </Button>
         </Form.Item>
       </Form>
