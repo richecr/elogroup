@@ -1,34 +1,30 @@
 import "./style.css";
-import "antd/dist/antd.css";
-import { Form, Input, Button, Checkbox } from "antd";
-import { useTodosStore } from "../../providers/Todo/TodoProvider";
-import React, { useState } from "react";
+import { Form, Input, Button } from "antd";
+import { useUserStore } from "../../providers/User/UserProvider";
+import { useHistory } from "react-router-dom";
 
-const Home = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const todoStore = useTodosStore();
+const Register = () => {
+  const UserStore = useUserStore();
+  let history = useHistory();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  const onFinish = () => {
+    UserStore.createUser();
+    history.push("/");
   };
 
   return (
     <div className="form-login">
       <Form
+        layout="vertical"
         name="basic"
-        labelCol={{ span: 12 }}
+        className="form-login-register"
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
           label="Usuário"
           name="user"
+          tooltip="This is a required field"
           rules={[
             {
               required: true,
@@ -36,29 +32,37 @@ const Home = () => {
             },
           ]}
         >
-          <Input />
+          <Input
+            value={UserStore.username}
+            onChange={(e) => UserStore.updateField("username", e.target.value)}
+          />
         </Form.Item>
 
         <Form.Item
           label="Password"
           name="password"
+          tooltip="This is a required field"
           rules={[
+            { required: true, message: "Por favor, insira sua senha!" },
             {
-              min: 8,
               pattern: new RegExp(
                 "(?=.*[!@#$%^&*])(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})"
               ),
-              required: true,
-              message: "Por favor, insira sua senha!",
+              message:
+                "Sua senha deve ter pelo menos 8 caracteres, sendo um caracter especial, um númerico e um caracter alfanúmerico.",
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password
+            value={UserStore.password}
+            onChange={(e) => UserStore.updateField("password", e.target.value)}
+          />
         </Form.Item>
 
         <Form.Item
           label="Confirmação Password"
           name="confirm_password"
+          tooltip="This is a required field"
           dependencies={["password"]}
           rules={[
             {
@@ -78,7 +82,12 @@ const Home = () => {
             }),
           ]}
         >
-          <Input.Password />
+          <Input.Password
+            value={UserStore.confirmPassword}
+            onChange={(e) =>
+              UserStore.updateField("confirmPassword", e.target.value)
+            }
+          />
         </Form.Item>
 
         <Form.Item>
@@ -91,4 +100,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Register;

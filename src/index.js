@@ -4,13 +4,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { TodoProvider } from "./providers/Todo/TodoProvider";
+import { UserProvider } from "./providers/User/UserProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <TodoProvider>
+    <UserProvider>
       <App />
-    </TodoProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -5,3 +5,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.form-login-register {
+  max-width: 205px;
+}
