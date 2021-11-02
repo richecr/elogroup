@@ -1,0 +1,12 @@
+.teste {
+  user-select: none;
+  padding: 16px;
+  margin: 0 0 8px 0;
+  min-height: 50px;
+  color: white;
+  background-color: #1f98e9;
+}
+
+.color-is-dragging {
+  background-color: #56f327;
+}
