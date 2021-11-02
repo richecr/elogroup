@@ -1,0 +1,8 @@
+.form-new-lead {
+  width: 60%;
+}
+
+.check-opportunities {
+  display: flex;
+  flex-direction: column;
+}

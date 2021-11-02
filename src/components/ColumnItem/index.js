@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import { Draggable } from "react-beautiful-dnd";
+import classNames from "classnames";
 import "./style.css";
 
 const ColumnItem = ({ item, index }) => {

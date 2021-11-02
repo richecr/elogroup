@@ -1,7 +1,8 @@
 import "./style.css";
+import { Link, useHistory } from "react-router-dom";
 import { Form, Input, Button } from "antd";
+
 import { useUserStore } from "../../providers/User/UserProvider";
-import { useHistory } from "react-router-dom";
 
 const Register = () => {
   const UserStore = useUserStore();
@@ -96,6 +97,8 @@ const Register = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <Link to="/">Entrar</Link>
     </div>
   );
 };

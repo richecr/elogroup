@@ -1,4 +1,5 @@
 import { action, makeObservable, observable } from "mobx";
+import uuid from "uuid/v4";
 
 class UserStore {
   username = "";
@@ -6,12 +7,21 @@ class UserStore {
   confirmPassword = "";
   is_logged = false;
 
+  leads = {};
+
+  leads_ = {};
+
   constructor() {
     makeObservable(this, {
       username: observable,
       password: observable,
       confirmPassword: observable,
+      leads: observable,
+      leads_: observable,
       updateField: action,
+      find_leads: action,
+      setLeads: action,
+      verify_logged: action,
     });
   }
 
@@ -57,6 +67,87 @@ class UserStore {
       console.error(e);
       this.is_logged = false;
     }
+  };
+
+  logout = () => {
+    localStorage.removeItem("user_logged");
+    this.is_logged = false;
+  };
+
+  verify_logged = () => {
+    if (localStorage.hasOwnProperty("user_logged")) {
+      this.is_logged = true;
+    } else {
+      this.is_logged = false;
+    }
+  };
+
+  find_leads = () => {
+    let leads = {};
+    if (localStorage.hasOwnProperty("leads")) {
+      leads = JSON.parse(localStorage.getItem("leads"));
+    }
+
+    const user = JSON.parse(localStorage.getItem("user_logged"));
+    if (leads[user.username]) {
+      this.leads_ = leads[user.username];
+    } else {
+      this.setLeads({
+        [uuid()]: {
+          name: "Cliente em Potencial",
+          items: [],
+        },
+        [uuid()]: {
+          name: "Dados Confirmados",
+          items: [],
+        },
+        [uuid()]: {
+          name: "Reunião Agendada",
+          items: [],
+        },
+      });
+    }
+  };
+
+  save_lead = (lead_save) => {
+    let leads = {};
+    if (localStorage.hasOwnProperty("leads")) {
+      leads = JSON.parse(localStorage.getItem("leads"));
+    }
+
+    const user = JSON.parse(localStorage.getItem("user_logged"));
+    if (!leads[user.username]) {
+      leads[user.username] = {
+        [uuid()]: {
+          name: "Cliente em Potencial",
+          items: [],
+        },
+        [uuid()]: {
+          name: "Dados Confirmados",
+          items: [],
+        },
+        [uuid()]: {
+          name: "Reunião Agendada",
+          items: [],
+        },
+      };
+    }
+
+    let id = "";
+    Object.entries(leads[user.username]).forEach((lead) => {
+      if (lead[1].name === lead_save.status) {
+        id = lead[0];
+      }
+    });
+    leads[user.username][id].items.push(lead_save);
+    this.setLeads(leads[user.username]);
+  };
+
+  setLeads = (leads) => {
+    const user = JSON.parse(localStorage.getItem("user_logged"));
+    this.leads[user.username] = leads;
+    this.leads_ = leads;
+    localStorage.setItem("leads", JSON.stringify(this.leads));
   };
 }
 

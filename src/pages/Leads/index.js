@@ -1,34 +1,12 @@
 import "./style.css";
-import { useEffect, useState } from "react";
-import { useUserStore } from "../../providers/User/UserProvider";
-import { useHistory } from "react-router-dom";
-
 import { DragDropContext } from "react-beautiful-dnd";
+import { useHistory } from "react-router-dom";
+import { useObserver } from "mobx-react";
+import { useEffect } from "react";
+import { Button } from "antd";
+
+import { useUserStore } from "../../providers/User/UserProvider";
 import Column from "../../components/Column";
-import uuid from "uuid/v4";
-
-const itemsFromBackend = [
-  { id: uuid(), content: "First task" },
-  { id: uuid(), content: "Second task" },
-  { id: uuid(), content: "Third task" },
-  { id: uuid(), content: "Fourth task" },
-  { id: uuid(), content: "Fifth task" },
-];
-
-const columnsFromBackend = {
-  [uuid()]: {
-    name: "To do",
-    items: itemsFromBackend,
-  },
-  [uuid()]: {
-    name: "In Progress",
-    items: [],
-  },
-  [uuid()]: {
-    name: "Done",
-    items: [],
-  },
-};
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -37,21 +15,29 @@ const onDragEnd = (result, columns, setColumns) => {
   if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[source.droppableId];
     const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
+
+    if (
+      (sourceColumn.name === "Cliente em Potencial" &&
+        destColumn.name === "Dados Confirmados") ||
+      (sourceColumn.name === "Dados Confirmados" &&
+        destColumn.name === "Reunião Agendada")
+    ) {
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    }
   } else {
     const column = columns[source.droppableId];
     const copiedItems = [...column.items];
@@ -67,30 +53,55 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-const Leads = () => {
+const Leads = ({ setTitleHeader }) => {
   const UserStore = useUserStore();
   let history = useHistory();
 
   useEffect(() => {
+    UserStore.verify_logged();
     if (UserStore.is_logged) {
-      return;
-    } else {
-      history.push("/");
+      UserStore.find_leads();
     }
   }, [UserStore, history]);
 
-  const [columns, setColumns] = useState(columnsFromBackend);
-  return (
-    <div className="panel-leads">
-      <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-      >
-        {Object.entries(columns).map(([columnId, column], index) => {
-          return <Column columnId={columnId} column={column} />;
-        })}
-      </DragDropContext>
-    </div>
-  );
+  const new_lead = (e) => {
+    e.preventDefault();
+    setTitleHeader("Novo Lead");
+    history.push("/new_lead");
+  };
+
+  return useObserver(() => (
+    <>
+      {UserStore.is_logged && (
+        <div className="panel">
+          <div>
+            <Button
+              type="primary"
+              className="btn-new-lead"
+              style={{ width: "30%" }}
+              onClick={(e) => new_lead(e)}
+            >
+              Novo Lead
+            </Button>
+
+            <DragDropContext
+              onDragEnd={(result) =>
+                onDragEnd(result, UserStore.leads_, UserStore.setLeads)
+              }
+            >
+              <div className="panel-leads">
+                {Object.entries(UserStore.leads_).map(
+                  ([columnId, column], index) => {
+                    return <Column columnId={columnId} column={column} />;
+                  }
+                )}
+              </div>
+            </DragDropContext>
+          </div>
+        </div>
+      )}
+    </>
+  ));
 };
 
 export default Leads;

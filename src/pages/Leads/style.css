@@ -1,5 +1,17 @@
-.panel-leads {
+.panel {
+  margin-top: 25px;
   display: flex;
   justify-content: center;
   height: 100%;
+}
+
+.panel-leads {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  height: 70%;
+}
+
+.btn-new-lead {
+  margin-left: 6px;
 }

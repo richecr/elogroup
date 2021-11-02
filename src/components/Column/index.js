@@ -1,5 +1,6 @@
 import { Droppable } from "react-beautiful-dnd";
 import { Typography } from "antd";
+
 import ColumnItem from "../ColumnItem";
 import "./style.css";
 
@@ -8,7 +9,7 @@ const { Title } = Typography;
 const Column = ({ columnId, column }) => {
   return (
     <div className="column" key={columnId}>
-      <Title level={4}>{column.name}</Title>
+      <Title level={5}>{column.name}</Title>
       <div className="column-content">
         <Droppable droppableId={columnId} key={columnId}>
           {(provided, snapshot) => (

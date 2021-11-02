@@ -1,7 +1,7 @@
-import { Form, Input, Button } from "antd";
-import { useUserStore } from "../../providers/User/UserProvider";
+import { Form, Input, Button, notification } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { notification } from "antd";
+
+import { useUserStore } from "../../providers/User/UserProvider";
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -10,13 +10,14 @@ const openNotificationWithIcon = (type) => {
   });
 };
 
-const Login = () => {
+const Login = ({ setTitleHeader }) => {
   const UserStore = useUserStore();
   let history = useHistory();
 
   const onFinish = () => {
     UserStore.login();
     if (UserStore.is_logged) {
+      setTitleHeader("Painel de Leads");
       history.push("/leads");
     } else {
       openNotificationWithIcon("error");
