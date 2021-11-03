@@ -6,11 +6,13 @@ import { user } from "../../stores/UserStore";
 const UserContext = React.createContext(null);
 
 export const UserProvider = ({ children }) => {
-  const userStore = useLocalStore(() => user);
+    const userStore = useLocalStore(() => user);
 
-  return (
-    <UserContext.Provider value={userStore}>{children}</UserContext.Provider>
-  );
+    return (
+        <UserContext.Provider value={userStore}>
+            {children}
+        </UserContext.Provider>
+    );
 };
 
 export const useUserStore = () => React.useContext(UserContext);

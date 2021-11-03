@@ -1,11 +1,11 @@
 .form-login {
-  display: flex;
-  height: 80vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    height: 80vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .form-login-register {
-  max-width: 205px;
+    max-width: 205px;
 }
