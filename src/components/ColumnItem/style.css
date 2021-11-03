@@ -1,13 +1,13 @@
 .teste {
-  user-select: none;
-  padding: 16px;
-  margin: 0 0 8px 0;
-  min-height: 50px;
-  color: white;
-  background-color: #1f98e9;
-  border-radius: 5px;
+    user-select: none;
+    padding: 16px;
+    margin: 0 0 8px 0;
+    min-height: 50px;
+    color: white;
+    background-color: #1f98e9;
+    border-radius: 5px;
 }
 
 .color-is-dragging {
-  background-color: #56f327;
+    background-color: #56f327;
 }

@@ -1,13 +1,13 @@
 .column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .column-content {
-  margin: 8px;
+    margin: 8px;
 }
 
 .column-content > div {
-  border-radius: 10px;
+    border-radius: 10px;
 }
